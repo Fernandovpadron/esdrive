@@ -1,3 +1,4 @@
+﻿
 import * as bookcarsTypes from ':bookcars-types'
 import Const from './const'
 
@@ -5,7 +6,7 @@ type Language = { code: string, countryCode: string, label: string }
 
 /**
  * ISO 639-1 language codes and their labels
- * https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+ * https://en.wikipedia.org/wiki/ISO_639-1_codes
  *
  * @type {Language[]}
  */
@@ -22,7 +23,7 @@ const LANGUAGES: Language[] = [
   },
   {
     code: 'es',
-    countryCode: 'es',
+    countryCode: 'mx',
     label: 'Español',
   },
 ]
@@ -38,6 +39,10 @@ type Currency = { code: string, symbol: string }
 const CURRENCIES: Currency[] = [
   {
     code: 'USD',
+    symbol: '$',
+  },
+  {
+    code: 'MXN',
     symbol: '$',
   },
   {
@@ -94,7 +99,7 @@ const env = {
   INFINITE_SCROLL_OFFSET: 40,
   SUPPLIER_IMAGE_WIDTH: Number.parseInt(String(import.meta.env.VITE_BC_SUPPLIER_IMAGE_WIDTH), 10) || 60,
   SUPPLIER_IMAGE_HEIGHT: Number.parseInt(String(import.meta.env.VITE_BC_SUPPLIER_IMAGE_HEIGHT), 10) || 30,
-  CAR_IMAGE_WIDTH: Number.parseInt(String(import.meta.env.VITE_BC_CAR_IMAGE_WIDTH), 10) || 300,
+  CAR_IMAGE_WIDTH: Number.parseInt(String(import.meta.env.VITE_BC_CAR_IMAGE_WIDTH), 10) || 200,
   CAR_IMAGE_HEIGHT: Number.parseInt(String(import.meta.env.VITE_BC_CAR_IMAGE_HEIGHT), 10) || 200,
   CAR_OPTION_IMAGE_HEIGHT: 85,
   SELECTED_CAR_OPTION_IMAGE_HEIGHT: 30,

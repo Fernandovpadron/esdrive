@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react'
 import {
   OutlinedInput,
@@ -35,14 +36,23 @@ const SignUp = () => {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const { reCaptchaLoaded, generateReCaptchaToken } = useRecaptchaContext() as RecaptchaContextType
+  const { reCaptchaLoaded, generateReCaptchaToken } =
+    useRecaptchaContext() as RecaptchaContextType
 
   const [language, setLanguage] = useState(env.DEFAULT_LANGUAGE)
   const [recaptchaError, setRecaptchaError] = useState(false)
   const [visible, setVisible] = useState(false)
   const [success, setSuccess] = useState(false)
 
-  const { register, handleSubmit, formState: { errors, isSubmitting }, setError, clearErrors, setValue, reset } = useForm<FormFields>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    setError,
+    clearErrors,
+    setValue,
+    reset
+  } = useForm<FormFields>({
     resolver: zodResolver(schema),
     mode: 'onSubmit'
   })
@@ -69,8 +79,10 @@ const SignUp = () => {
   const onSubmit = async (data: FormFields) => {
     try {
       let recaptchaToken = ''
+
       if (reCaptchaLoaded) {
         recaptchaToken = await generateReCaptchaToken()
+
         if (!(await helper.verifyReCaptcha(recaptchaToken))) {
           recaptchaToken = ''
         }
@@ -118,11 +130,21 @@ const SignUp = () => {
       <div className="signup">
         {visible && !success && (
           <Paper className="signup-form" elevation={10}>
-            <h1 className="signup-form-title">{strings.SIGN_UP_HEADING}</h1>
+            <h1 className="signup-form-title">
+              {strings.SIGN_UP_HEADING}
+            </h1>
+
             <form onSubmit={handleSubmit(onSubmit)}>
               <div>
-                <FormControl fullWidth margin="dense" error={!!errors.fullName}>
-                  <InputLabel className="required">{commonStrings.FULL_NAME}</InputLabel>
+                <FormControl
+                  fullWidth
+                  margin="dense"
+                  error={!!errors.fullName}
+                >
+                  <InputLabel className="required">
+                    {commonStrings.FULL_NAME}
+                  </InputLabel>
+
                   <OutlinedInput
                     type="text"
                     {...register('fullName')}
@@ -131,39 +153,68 @@ const SignUp = () => {
                     required
                   />
                 </FormControl>
-                <FormControl fullWidth margin="dense" error={!!errors.email}>
-                  <InputLabel className="required">{commonStrings.EMAIL}</InputLabel>
+
+                <FormControl
+                  fullWidth
+                  margin="dense"
+                  error={!!errors.email}
+                >
+                  <InputLabel className="required">
+                    {commonStrings.EMAIL}
+                  </InputLabel>
+
                   <OutlinedInput
-                    type="text"
-                    {...register('email')}
+                    type="email"
+                    {...register('email', {
+                      onChange: () => {
+                        if (errors.email) {
+                          clearErrors('email')
+                        }
+                      }
+                    })}
                     label={commonStrings.EMAIL}
                     autoComplete="off"
-                    onChange={() => {
-                      if (errors.email) {
-                        clearErrors('email')
-                      }
-                    }}
                     required
                   />
-                  <FormHelperText error={!!errors.email}>{errors.email?.message || ''}</FormHelperText>
+
+                  <FormHelperText error={!!errors.email}>
+                    {errors.email?.message || ''}
+                  </FormHelperText>
                 </FormControl>
-                <FormControl fullWidth margin="dense" error={!!errors.phone}>
-                  <InputLabel className="required">{commonStrings.PHONE}</InputLabel>
+
+                <FormControl
+                  fullWidth
+                  margin="dense"
+                  error={!!errors.phone}
+                >
+                  <InputLabel className="required">
+                    {commonStrings.PHONE}
+                  </InputLabel>
+
                   <OutlinedInput
                     type="text"
-                    {...register('phone')}
+                    {...register('phone', {
+                      onChange: () => {
+                        if (errors.phone) {
+                          clearErrors('phone')
+                        }
+                      }
+                    })}
                     label={commonStrings.PHONE}
                     autoComplete="off"
-                    onChange={() => {
-                      if (errors.phone) {
-                        clearErrors('phone')
-                      }
-                    }}
                     required
                   />
-                  <FormHelperText error={!!errors.phone}>{errors.phone?.message || ''}</FormHelperText>
+
+                  <FormHelperText error={!!errors.phone}>
+                    {errors.phone?.message || ''}
+                  </FormHelperText>
                 </FormControl>
-                <FormControl fullWidth margin="dense" error={!!errors.birthDate}>
+
+                <FormControl
+                  fullWidth
+                  margin="dense"
+                  error={!!errors.birthDate}
+                >
                   <DatePicker
                     label={commonStrings.BIRTH_DATE}
                     variant="outlined"
@@ -173,53 +224,63 @@ const SignUp = () => {
                         if (errors.birthDate) {
                           clearErrors('birthDate')
                         }
-                        setValue('birthDate', birthDate, { shouldValidate: true })
+
+                        setValue('birthDate', birthDate, {
+                          shouldValidate: true
+                        })
                       }
                     }}
                     language={language}
                   />
-                  <FormHelperText error={!!errors.birthDate}>{errors.birthDate?.message || ''}</FormHelperText>
+
+                  <FormHelperText error={!!errors.birthDate}>
+                    {errors.birthDate?.message || ''}
+                  </FormHelperText>
                 </FormControl>
 
                 <PasswordInput
                   label={commonStrings.PASSWORD}
                   variant="outlined"
-                  {...register('password')}
+                  {...register('password', {
+                    onChange: (event) => {
+                      if (errors.password) {
+                        clearErrors('password')
+                      }
+
+                      setValue('password', event.target.value)
+                    }
+                  })}
                   error={!!errors.password}
                   helperText={errors.password?.message}
-                  onChange={(e) => {
-                    if (errors.password) {
-                      clearErrors('password')
-                    }
-                    setValue('password', e.target.value)
-                  }}
                   required
                   inputProps={{
                     autoComplete: 'new-password',
                     form: {
-                      autoComplete: 'off',
-                    },
+                      autoComplete: 'off'
+                    }
                   }}
                 />
 
                 <PasswordInput
                   label={commonStrings.CONFIRM_PASSWORD}
                   variant="outlined"
-                  {...register('confirmPassword')}
+                  {...register('confirmPassword', {
+                    onChange: (event) => {
+                      if (errors.confirmPassword) {
+                        clearErrors('confirmPassword')
+                      }
+
+                      setValue('confirmPassword', event.target.value)
+                    }
+                  })}
                   error={!!errors.confirmPassword}
                   helperText={errors.confirmPassword?.message}
-                  onChange={(e) => {
-                    if (errors.confirmPassword) {
-                      clearErrors('confirmPassword')
-                    }
-                    setValue('confirmPassword', e.target.value)
-                  }}
                   required
                   inputProps={{
                     autoComplete: 'new-password',
                     form: {
-                      autoComplete: 'off',
-                    },
+                      autoComplete: 'off'
+                    }
                   }}
                 />
 
@@ -229,24 +290,33 @@ const SignUp = () => {
                       <tr>
                         <td aria-label="tos">
                           <Checkbox
-                            {...register('tos')}
-                            color="primary"
-                            onChange={() => {
-                              if (errors.tos) {
-                                clearErrors('tos')
+                            {...register('tos', {
+                              onChange: () => {
+                                if (errors.tos) {
+                                  clearErrors('tos')
+                                }
                               }
-                            }}
+                            })}
+                            color="primary"
                           />
                         </td>
+
                         <td>
-                          <Link href="/tos" target="_blank" rel="noreferrer">
+                          <Link
+                            href="/tos"
+                            target="_blank"
+                            rel="noreferrer"
+                          >
                             {commonStrings.TOS}
                           </Link>
                         </td>
                       </tr>
+
                       <tr>
                         <td colSpan={2}>
-                          <FormHelperText error={!!errors.tos}>{errors.tos?.message || ''}</FormHelperText>
+                          <FormHelperText error={!!errors.tos}>
+                            {errors.tos?.message || ''}
+                          </FormHelperText>
                         </td>
                       </tr>
                     </tbody>
@@ -256,17 +326,34 @@ const SignUp = () => {
                 <SocialLogin redirectToHomepage />
 
                 <div className="buttons">
-                  <Button type="submit" variant="contained" className="btn-primary btn-margin-bottom" disabled={isSubmitting}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    className="btn-primary btn-margin-bottom"
+                    disabled={isSubmitting}
+                  >
                     {strings.SIGN_UP}
                   </Button>
-                  <Button variant="outlined" color="primary" className="btn-margin-bottom" onClick={() => navigate('/')}>
+
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    className="btn-margin-bottom"
+                    onClick={() => navigate('/')}
+                  >
                     {commonStrings.CANCEL}
                   </Button>
                 </div>
               </div>
+
               <div className="form-error">
-                {errors.root && <Error message={errors.root.message!} />}
-                {recaptchaError && <Error message={commonStrings.RECAPTCHA_ERROR} />}
+                {errors.root && (
+                  <Error message={errors.root.message!} />
+                )}
+
+                {recaptchaError && (
+                  <Error message={commonStrings.RECAPTCHA_ERROR} />
+                )}
               </div>
             </form>
           </Paper>
@@ -275,9 +362,15 @@ const SignUp = () => {
         {success && (
           <Paper className="signup-form" elevation={10}>
             <h1>{strings.SIGN_UP_SUCCESS_HEADING}</h1>
+
             <p>{strings.SIGN_UP_SUCCESS_MESSAGE}</p>
+
             <div className="buttons" style={{ marginTop: 20 }}>
-              <Button variant="contained" className="btn-primary" onClick={() => navigate('/sign-in')}>
+              <Button
+                variant="contained"
+                className="btn-primary"
+                onClick={() => navigate('/sign-in')}
+              >
                 {signinStrings.SIGN_IN}
               </Button>
             </div>
@@ -287,7 +380,9 @@ const SignUp = () => {
 
       <Footer />
 
-      {isSubmitting && <Backdrop text={commonStrings.PLEASE_WAIT} />}
+      {isSubmitting && (
+        <Backdrop text={commonStrings.PLEASE_WAIT} />
+      )}
     </Layout>
   )
 }
