@@ -1,7 +1,7 @@
 {
-  "name": "bookcars",
+  "name": "esdrive",
   "version": "8.9.0",
-  "description": "Car Rental Booking System",
+  "description": "EsDrive - Car Rental Booking Platform",
   "keywords": [
     "react",
     "react-native",
@@ -11,15 +11,15 @@
     "car-rental",
     "car-rental-system",
     "aggregator",
-    "bookcars"
+    "esdrive"
   ],
-  "homepage": "https://github.com/aelassas/bookcars#readme",
+  "homepage": "https://github.com/Fernandovpadron/esdrive#readme",
   "bugs": {
-    "url": "https://github.com/aelassas/bookcars/issues"
+    "url": "https://github.com/Fernandovpadron/esdrive/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aelassas/bookcars.git"
+    "url": "git+https://github.com/Fernandovpadron/esdrive.git"
   },
   "funding": "https://github.com/sponsors/aelassas",
   "author": "Akram El Assas",
