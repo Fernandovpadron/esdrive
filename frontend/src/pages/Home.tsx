@@ -153,10 +153,8 @@ const Home = () => {
             )}
           </div>
 
-	  {/*
 	  <div className="home-title">{strings.TITLE}</div>
           <div className="home-cover">{strings.COVER}</div>
-*/}
           {/* <div className="home-subtitle">{strings.SUBTITLE}</div> */}
 
         </div>
