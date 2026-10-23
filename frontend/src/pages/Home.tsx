@@ -159,11 +159,13 @@ const Home = () => {
 
         </div>
 
-        <div className="search">
-          <div className="home-search">
-            <SearchForm />
-          </div>
-        </div>
+{/* 
+	<div className="search">
+  	 <div className="home-search">
+    	    <SearchForm />
+	 </div>
+	</div>
+*/}
 
         <div className="why">
 
