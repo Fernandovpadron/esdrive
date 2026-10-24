@@ -51,6 +51,8 @@ services:
       context: .
       dockerfile: ./backend/Dockerfile
     env_file: ./backend/.env.docker
+    environment:
+ #     NODE_TLS_REJECT_UNAUTHORIZED: "0"
     restart: always
     ports:
       - 4002:4002
