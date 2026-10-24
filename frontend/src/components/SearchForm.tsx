@@ -234,9 +234,10 @@ const SearchForm = ({
   }, [from, to]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Guard against using `minDate` before it's ready
-  if (!settings || !minDate || !fromMinDate || !minTime || !maxTime) {
-    return null
-  }
+  // PRUEBA TEMPORAL: mostrar el formulario aunque falte algún valor. FVP
+  // if (!settings || !minDate || !fromMinDate || !minTime || !maxTime) {
+  //   return null
+  // }
 
   const handlePickupLocationChange = async (values: bookcarsTypes.Option[]) => {
     const _pickupLocationId = (values.length > 0 && values[0]._id) || ''
