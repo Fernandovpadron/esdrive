@@ -333,9 +333,10 @@ const SearchForm = ({
               variant="outlined"
               label={strings.PICK_UP_DATE}
               value={field.value || undefined}
-              minDate={fromMinDate}
-              minTime={minTime}
-              maxTime={maxTime}
+              // FVP 20261023: fix TypeScript Date | null
+              minDate={fromMinDate ?? undefined}
+              minTime={minTime ?? undefined}
+              maxTime={maxTime ?? undefined}
               onChange={(date) => {
                 field.onChange(date)
               }}
@@ -355,9 +356,10 @@ const SearchForm = ({
               variant="outlined"
               label={strings.DROP_OFF_DATE}
               value={field.value || undefined}
-              minDate={minDate}
-              minTime={minTime}
-              maxTime={maxTime}
+              // FVP 20261023: fix TypeScript Date | null
+              minDate={minDate ?? undefined}
+              minTime={minTime ?? undefined}
+              maxTime={maxTime ?? undefined}
               onChange={(date) => {
                 field.onChange(date)
               }}
