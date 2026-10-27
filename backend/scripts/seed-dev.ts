@@ -1,3 +1,4 @@
+
 import 'dotenv/config'
 import fs from 'node:fs'
 import asyncFs from 'node:fs/promises'
@@ -200,6 +201,73 @@ const createSeedLocation = async (supplierId: mongoose.Types.ObjectId) => {
   }
 }
 
+/**
+ * Ensures Mexico exists for the seed supplier.
+ *
+ * The country is created without locations. Existing Mexico translations
+ * associated with this supplier are reused to avoid duplicate seed data.
+ */
+const ensureMexicoCountry = async (
+  supplierId: mongoose.Types.ObjectId,
+): Promise<void> => {
+  const countries = await Country.find({ supplier: supplierId })
+
+  for (const country of countries) {
+    const values = await LocationValue.find({
+      _id: { $in: country.values },
+    })
+
+    const hasMexicoTranslation = values.some(
+      (value) =>
+        (value.language === 'en' && value.value === 'Mexico') ||
+        (value.language === 'es' && value.value === 'México'),
+    )
+
+    if (!hasMexicoTranslation) {
+      continue
+    }
+
+    const hasEnglish = values.some(
+      (value) => value.language === 'en' && value.value === 'Mexico',
+    )
+    const hasSpanish = values.some(
+      (value) => value.language === 'es' && value.value === 'México',
+    )
+
+    const missingValues: Array<{ language: string; value: string }> = []
+
+    if (!hasEnglish) {
+      missingValues.push({ language: 'en', value: 'Mexico' })
+    }
+
+    if (!hasSpanish) {
+      missingValues.push({ language: 'es', value: 'México' })
+    }
+
+    if (missingValues.length > 0) {
+      const createdValues = await LocationValue.create(missingValues)
+
+      country.values.push(...createdValues.map((value) => value._id))
+      await country.save()
+    }
+
+    logger.info('Mexico country already exists for the seed supplier.')
+    return
+  }
+
+  const countryValues = await LocationValue.create([
+    { language: 'en', value: 'Mexico' },
+    { language: 'es', value: 'México' },
+  ])
+
+  await Country.create({
+    values: countryValues.map((value) => value._id),
+    supplier: supplierId,
+  })
+
+  logger.info('Created country: Mexico (Mexico / México).')
+}
+
 async function main(): Promise<void> {
   if (process.env.NODE_ENV !== 'development') {
     throw new Error('Development seed commands require NODE_ENV=development.')
@@ -389,6 +457,9 @@ async function main(): Promise<void> {
     if (!location) {
       throw new Error('The original seed location no longer exists.')
     }
+
+    // 3.1. Ensure Mexico exists as a country, without adding locations.
+    await ensureMexicoCountry(supplierId)
 
     // 4. Seed Cars
     const createdCars: any[] = []
