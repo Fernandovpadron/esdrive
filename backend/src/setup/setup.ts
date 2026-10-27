@@ -45,6 +45,23 @@ async function restoreDemoCarImages(): Promise<void> {
   }
 }
 
+async function restoreDefaultSupplierImage(): Promise<void> {
+  const sourcePath = path.resolve(process.cwd(), 'scripts/img/supplier.png')
+
+  if (!fs.existsSync(sourcePath)) {
+    logger.warn(`Default supplier image not found: ${sourcePath}`)
+    return
+  }
+
+  await asyncFs.mkdir(env.CDN_USERS, { recursive: true })
+  const targetPath = path.join(env.CDN_USERS, 'supplier.png')
+
+  if (!fs.existsSync(targetPath)) {
+    await asyncFs.copyFile(sourcePath, targetPath)
+    logger.info('Default supplier image restored')
+  }
+}
+
 try {
   const connected = await databaseHelper.connect(
     env.DB_URI,
@@ -80,6 +97,7 @@ try {
   }
 
   await restoreDemoCarImages()
+  await restoreDefaultSupplierImage()
   process.exit(0)
 } catch (err) {
   logger.error('Error during setup:', err)
