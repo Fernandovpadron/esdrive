@@ -51,7 +51,8 @@ services:
       context: .
       dockerfile: ./backend/Dockerfile
     env_file: ./backend/.env.docker
-    environment:
+ # FVP 2026 10 26
+ #   environment:
  #     NODE_TLS_REJECT_UNAUTHORIZED: "0"
     restart: always
     ports:
