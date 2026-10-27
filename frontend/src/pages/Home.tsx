@@ -362,11 +362,11 @@ const Home = () => {
                 <ul>
                   <li>
                     <span className="price">{bookcarsHelper.formatPrice(miniPricePhr, commonStrings.CURRENCY, language)}</span>
-                    <span className="unit"> · phr</span>
+                    <span className="unit"> · por hora</span>
                   </li>
                   <li>
                     <span className="price">{bookcarsHelper.formatPrice(miniPricePday, commonStrings.CURRENCY, language)}</span>
-                    <span className="unit"> · pday</span>
+                    <span className="unit"> · por día</span>
                   </li>
                 </ul>
               </div>
@@ -411,11 +411,11 @@ const Home = () => {
                 <ul>
                   <li>
                     <span className="price">{bookcarsHelper.formatPrice(midiPricePhr, commonStrings.CURRENCY, language)}</span>
-                    <span className="unit"> · phr</span>
+                    <span className="unit"> · por hora</span>
                   </li>
                   <li>
                     <span className="price">{bookcarsHelper.formatPrice(midiPricePday, commonStrings.CURRENCY, language)}</span>
-                    <span className="unit"> · pday</span>
+                    <span className="unit"> · por día</span>
                   </li>
                 </ul>
               </div>
@@ -459,11 +459,11 @@ const Home = () => {
                 <ul>
                   <li>
                     <span className="price">{bookcarsHelper.formatPrice(maxiPricePhr, commonStrings.CURRENCY, language)}</span>
-                    <span className="unit"> · phr</span>
+                    <span className="unit"> · por hora</span>
                   </li>
                   <li>
                     <span className="price">{bookcarsHelper.formatPrice(maxiPricePday, commonStrings.CURRENCY, language)}</span>
-                    <span className="unit"> · pday</span>
+                    <span className="unit"> · por día</span>
                   </li>
                 </ul>
               </div>
