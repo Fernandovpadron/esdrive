@@ -66,6 +66,15 @@ export const joinURL = (part1?: string, part2?: string) => {
   if (part1.charAt(part1.length - 1) === '/') {
     part1 = part1.substring(0, part1.length - 1)
   }
+  // Older/deployed records can contain the server's filesystem path instead
+  // of the filename stored by the API (for example
+  // /var/www/cdn/bookcars/cars/<image>). It is not a URL path; keep only the
+  // path below the CDN root before joining it to the public CDN URL.
+  const cdnRoot = '/var/www/cdn/bookcars/'
+  const cdnRootIndex = part2.indexOf(cdnRoot)
+  if (cdnRootIndex >= 0) {
+    part2 = part2.substring(cdnRootIndex + cdnRoot.length).split('/').pop() || ''
+  }
   if (part2.charAt(0) === '/') {
     part2 = part2.substring(1)
   }
